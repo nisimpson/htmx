@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"html/template"
@@ -78,7 +77,7 @@ var functions = template.FuncMap{
 }
 
 func (s SnippetBox) render(w *htmx.ResponseWriter, r *htmx.Request, view SnippetView) {
-	var fn htmx.ComponentFunc = func(ctx context.Context, w io.Writer) error {
+	var fn htmx.ComponentFunc = func(w io.Writer) error {
 		// retrieve the approperiate template set from the cache based on the template name
 		name := view.TemplateName()
 		ts, ok := s.Templates[name]
@@ -121,8 +120,7 @@ func (s SnippetBox) render(w *htmx.ResponseWriter, r *htmx.Request, view Snippet
 		return nil
 	}
 
-	w.WriteHeader(http.StatusOK)
-	w.WriteComponent(r.Context(), fn)
+	htmx.WriteComponent(w, fn, http.StatusOK)
 }
 
 func (SnippetBox) serverError(w http.ResponseWriter, err error) {
