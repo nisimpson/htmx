@@ -91,6 +91,7 @@ func (r ResponseWriter) WriteComponent(component Component, statusCode int) {
 	err := component.RenderHTMX(&buf)
 	if err != nil {
 		http.Error(r, "Internal Server Error", http.StatusInternalServerError)
+		return
 	}
 
 	r.WriteHeader(statusCode)
