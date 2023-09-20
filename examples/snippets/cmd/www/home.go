@@ -21,5 +21,5 @@ func (s *SnippetBox) home(w *htmx.ResponseWriter, r *htmx.Request) {
 
 	page := pages.HomePage{}
 	page.Snippets = snippets
-	s.render(w, page)
+	s.render(w, r, page)
 }

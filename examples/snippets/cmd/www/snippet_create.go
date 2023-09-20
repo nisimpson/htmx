@@ -29,7 +29,7 @@ func (s *SnippetBox) pollSnippets(w *htmx.ResponseWriter, r *htmx.Request) {
 		return
 	}
 
-	s.render(w, components.SnippetsList{Snippets: snippets})
+	s.render(w, r, components.SnippetsList{Snippets: snippets})
 }
 
 func (s *SnippetBox) createSnippet(w *htmx.ResponseWriter, r *htmx.Request) {

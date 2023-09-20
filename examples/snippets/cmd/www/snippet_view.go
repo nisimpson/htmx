@@ -22,5 +22,5 @@ func (s *SnippetBox) viewSnippet(w *htmx.ResponseWriter, r *htmx.Request) {
 		return
 	}
 	view := pages.SnippetPage{Snippet: item}
-	s.render(w, view)
+	s.render(w, r, view)
 }

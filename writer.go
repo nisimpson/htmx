@@ -2,6 +2,7 @@ package htmx
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -71,24 +72,24 @@ func (r ResponseWriter) SetTriggerAfterSwapHeader(event TriggerEvent) {
 }
 
 type Component interface {
-	RenderHTMX(io.Writer) error
+	RenderHTMX(context.Context, io.Writer) error
 }
 
-type ComponentFunc func(io.Writer) error
+type ComponentFunc func(context.Context, io.Writer) error
 
-func (f ComponentFunc) RenderHTMX(w io.Writer) error {
-	return f(w)
+func (f ComponentFunc) RenderHTMX(ctx context.Context, w io.Writer) error {
+	return f(ctx, w)
 }
 
 // WriteComponent invokes the Render() method on the provided component,
 // writing the contents to the http response writer.
-func (r ResponseWriter) WriteComponent(component Component, statusCode int) {
+func (r ResponseWriter) WriteComponent(ctx context.Context, component Component, statusCode int) {
 	// initialize new buffer; a temporary buffer is used to ensure
 	// the template transformation is valid and safe to transport back
 	// to the client.
 	buf := bytes.Buffer{}
 
-	err := component.RenderHTMX(&buf)
+	err := component.RenderHTMX(ctx, &buf)
 	if err != nil {
 		http.Error(r, "Internal Server Error", http.StatusInternalServerError)
 		return
