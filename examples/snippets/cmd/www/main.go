@@ -121,7 +121,8 @@ func (s SnippetBox) render(w *htmx.ResponseWriter, r *htmx.Request, view Snippet
 		return nil
 	}
 
-	w.WriteComponent(r.Context(), fn, http.StatusOK)
+	w.WriteHeader(http.StatusOK)
+	w.WriteComponent(r.Context(), fn)
 }
 
 func (SnippetBox) serverError(w http.ResponseWriter, err error) {

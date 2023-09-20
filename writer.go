@@ -83,7 +83,7 @@ func (f ComponentFunc) RenderHTMX(ctx context.Context, w io.Writer) error {
 
 // WriteComponent invokes the Render() method on the provided component,
 // writing the contents to the http response writer.
-func (r ResponseWriter) WriteComponent(ctx context.Context, component Component, statusCode int) {
+func (r ResponseWriter) WriteComponent(ctx context.Context, component Component) {
 	// initialize new buffer; a temporary buffer is used to ensure
 	// the template transformation is valid and safe to transport back
 	// to the client.
@@ -95,7 +95,6 @@ func (r ResponseWriter) WriteComponent(ctx context.Context, component Component,
 		return
 	}
 
-	r.WriteHeader(statusCode)
 	buf.WriteTo(r)
 }
 
