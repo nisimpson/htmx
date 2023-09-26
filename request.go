@@ -1,6 +1,9 @@
 package htmx
 
-import "net/http"
+import (
+	"net/http"
+	"net/url"
+)
 
 type Request struct {
 	*http.Request
@@ -39,4 +42,20 @@ func (r Request) HTMXTargetID() string {
 // the "HX-Prompt" header.
 func (r Request) HTMXPrompt() string {
 	return r.Header.Get(HeaderHXPrompt)
+}
+
+// HTMXCurrentURL returns the current URL of the client browser if specified.
+func (r Request) HTMXCurrentURL() (*url.URL, bool) {
+	if value, err := url.Parse(r.Header.Get(HeaderHXCurrentURL)); err != nil {
+		return nil, false
+	} else {
+		return value, true
+	}
+}
+
+// IsHTMXHistoryRestoreRequest returns true if the "HX-History-Restore-Request"
+// header is set to "true". This indicates that this request is for history restoration
+// after a miss in the local history cache.
+func (r Request) IsHTMXHistoryRestoreRequest() bool {
+	return r.Header.Get(HeaderHXHistoryRestoreRequest) == "true"
 }

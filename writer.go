@@ -25,7 +25,7 @@ func NewResponseWriter(w http.ResponseWriter) *ResponseWriter {
 // SetPushHeader sets the "HX-Push" header which triggers the web client to
 // push the target URL into the browser's address bar.
 func (r ResponseWriter) SetPushHeader(url url.URL) {
-	r.Header().Set(HeaderHXPush, url.String())
+	r.Header().Set(HeaderHXPushURL, url.String())
 }
 
 // SetRedirectHeader sets the "HX-Redirect" header which triggers the web client
