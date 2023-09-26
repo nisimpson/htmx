@@ -46,10 +46,14 @@ func (r Request) HTMXPrompt() string {
 
 // HTMXCurrentURL returns the current URL of the client browser if specified.
 func (r Request) HTMXCurrentURL() (*url.URL, bool) {
-	if value, err := url.Parse(r.Header.Get(HeaderHXCurrentURL)); err != nil {
+	if !r.IsHTMXRequest() {
+		return nil, false
+	} else if value := r.Header.Get(HeaderHXCurrentURL); value == "" {
+		return nil, false
+	} else if currentURL, err := url.Parse(value); err != nil {
 		return nil, false
 	} else {
-		return value, true
+		return currentURL, true
 	}
 }
 
